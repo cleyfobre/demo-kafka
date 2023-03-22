@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StringProducer {
 
-    @Value("${demo-kafka.topic}")
+    @Value("${demo-kafka.topic.dca}")
     String topic;
 
     @Autowired

@@ -20,4 +20,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       # value-serializer: org.apache.kafka.common.serialization.StringSerializer
 demo-kafka:
-  topic: dcaTopic
+  topic:
+    dca: demo.user
+    wikimedia: demo.wikimedia

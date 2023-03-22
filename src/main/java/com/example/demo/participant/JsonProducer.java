@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsonProducer {
 
-    @Value("${demo-kafka.topic}")
+    @Value("${demo-kafka.topic.dca}")
     String topic;
 
     @Autowired

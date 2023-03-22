@@ -19,7 +19,7 @@ public class StringController {
     public ResponseEntity<String> publish(@RequestParam("message") String message) {
         producer.send(message);
         return ResponseEntity.ok("Message sent to the topic");
-        
+
     }
 
 }

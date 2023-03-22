@@ -16,7 +16,7 @@ public class StringConsumer {
      *
      *  And Add below code on consume(String message)
      *  code:
-     *     @KafkaListener(topics = "${demo-kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
+     *     @KafkaListener(topics = "${demo-kafka.topic.dca}", groupId = "${spring.kafka.consumer.group-id}")
      */
     public void consume(String message) {
         log.info("message: " + message);

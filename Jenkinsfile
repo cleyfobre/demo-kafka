@@ -6,8 +6,10 @@ node {
     app = docker.build("demo2")
   }
   stage('========== Push image ==========') {
-    docker.withRegistry('YOUR_REGISTRY', 'YOUR_CREDENTIAL') {
-      echo "hello world"
+    docker.withRegistry('', 'admin') {
+      app.push("${env.BUILD_NUMBER}")
+      app.push("latest")
+      echo "Completed!"
     }
   }
 }

@@ -9,8 +9,7 @@ node {
         docker.withRegistry('', 'cleyfobre') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
-            sh 'docker rmi cleyfobre/demo2:${env.BUILD_NUMBER}'
-            sh 'docker rmi cleyfobre/demo2:latest'
+            sh 'docker rmi $(docker image ls | grep cleyfobre/demo2)'
         }
     }
     stage('========== Sned pem to ec2 ==========') {

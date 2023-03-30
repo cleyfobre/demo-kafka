@@ -20,7 +20,9 @@ node {
     stage('========== Push image to ec2 ==========') {
         sshagent (credentials: ['test-web-ssh']) {
             sh """
-               ssh -o StrictHostKeyChecking=no ubuntu@172.31.5.156 "pwd"
+               ssh -o StrictHostKeyChecking=no ubuntu@172.31.5.156
+               pwd
+               sh /home/ubuntu/build.sh
             """
         }
     }

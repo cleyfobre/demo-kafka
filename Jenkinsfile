@@ -6,19 +6,25 @@ pipeline {
                 checkout scm
             }
         }
-        stage('========== Build image ==========') {
-            steps {
-                app = docker.build("cleyfobre/demo2")
-            }
-        }
         stage('========== Push image to docker hub ==========') {
             steps {
-                docker.withRegistry('', 'cleyfobre') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
-                    sh 'docker rmi cleyfobre/demo2:0.0.1'
-                    sh 'docker rmi cleyfobre/demo2:latest'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'cleyfobre', passwordVariable: 'password', usernameVariable: 'username')]){
+                        sh '''
+                            echo "${password} | docker login -u ${username} --password-stdin"
+                        '''
+                        def app = docker.build("cleyfobre/nginx-example")
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                        sh 'docker rmi cleyfobre/demo2:0.0.1'
+                        sh 'docker rmi cleyfobre/demo2:latest'
+                    }
                 }
+            }
+        }
+        stage('========== Test ==========') {
+            steps {
+                echo "testing..."
             }
         }
         stage('========== Work for test-web instance ==========') {

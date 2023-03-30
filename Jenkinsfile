@@ -13,7 +13,7 @@ pipeline {
                         sh '''
                             echo "${password} | docker login -u ${username} --password-stdin"
                         '''
-                        def app = docker.build("cleyfobre/nginx-example")
+                        def app = docker.build("cleyfobre/demo2")
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                         sh 'docker rmi cleyfobre/demo2:0.0.1'

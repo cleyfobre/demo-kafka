@@ -3,7 +3,7 @@ node {
     checkout scm
   }
   stage('========== Build image ==========') {
-    app = docker.build("demo2")
+    app = docker.build("cleyfobre/demo2")
   }
   stage('========== Push image ==========') {
     docker.withRegistry('', 'cleyfobre') {

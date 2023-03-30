@@ -13,9 +13,11 @@ node {
             sh 'docker rmi cleyfobre/demo2:latest'
         }
     }
-    stage('========== Push image to ec2 ==========') {
+    stage('========== Sned pem to ec2 ==========') {
         sh 'pwd'
         sh 'scp -o StrictHostKeyChecking=no -i /var/jenkins_home/plkdev.pem ./src/deploy/build.sh ubuntu@172.31.5.156:/home/ubuntu'
+    }
+    stage('========== Push image to ec2 ==========') {
         steps {
             sshagent (credentials: ['jenkins-ssh']) {
                 sh """

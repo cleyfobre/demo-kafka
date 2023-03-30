@@ -9,7 +9,7 @@ node {
         docker.withRegistry('', 'cleyfobre') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
-            sh 'docker rmi cleyfobre/demo2:0.0.1'
+            sh 'docker rmi cleyfobre/demo2:${env.BUILD_NUMBER}'
             sh 'docker rmi cleyfobre/demo2:latest'
         }
     }
@@ -21,7 +21,6 @@ node {
         sshagent (credentials: ['test-web-ssh']) {
             sh """
                ssh -o StrictHostKeyChecking=no ubuntu@172.31.5.156 '
-               pwd
                sh /home/ubuntu/build.sh
                '
             """

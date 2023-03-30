@@ -10,10 +10,12 @@ node {
       app.push("${env.BUILD_NUMBER}")
       app.push("latest")
       sh 'docker rmi cleyfobre/demo2:0.0.1'
+      sh 'docker rmi cleyfobre/demo2:latest'
     }
   }
   stage('========== Push image to ec2 ==========') {
-    sh 'pwd'
-    sh 'ls -al'
+    sh 'scp -o StrictHostKeyChecking=no -i /var/jenkins_home/plkdev.pem ./src/deploy/build.sh ubuntu@172.31.5.156:/home/ubuntu'
+    sh 'ssh -o StrictHostKeyChecking=no -i /var/jenkins_home/plkdev.pem ubuntu@172.31.5.156'
+    sh 'sh build.sh'
   }
 }

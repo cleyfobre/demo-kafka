@@ -1,30 +1,45 @@
 pipeline {
+    environment {
+        TARGET_HOST = "ubuntu@172.31.5.156"
+        DOCKERHUB_CREDENTIALS = credentials('cleyfobre')
+    }
     agent any
     stages {
-        stage('========== Clone repository ==========') {
+        stage('========== Clone Source ==========') {
             steps {
                 checkout scm
             }
         }
-        stage('========== Push image to docker hub ==========') {
+        stage('========== Build ==========') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'cleyfobre', passwordVariable: 'password', usernameVariable: 'username')]){
-                        sh '''
-                            echo "${password} | docker login -u ${username} --password-stdin"
-                        '''
-                        def app = docker.build("cleyfobre/demo2")
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                        sh 'docker rmi cleyfobre/demo2:0.0.1'
-                        sh 'docker rmi cleyfobre/demo2:latest'
-                    }
+                    docker.build 'cleyfobre/demo2:$BUILD_NUMBER'
+                    docker.build 'cleyfobre/demo2:latest'
                 }
             }
         }
         stage('========== Test ==========') {
             steps {
-                echo "testing..."
+                echo "Testing"
+            }
+        }
+        stage('========== Login ==========') {
+            steps{
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
+            }
+        }
+        stage('========== Deploy to Docker Hub ==========') {
+            steps {
+                script {
+                    sh 'docker push cleyfobre/demo2:$BUILD_NUMBER'
+                    sh 'docker push cleyfobre/demo2:latest'
+                }
+            }
+        }
+        stage('========== Remove Images ==========') {
+            steps {
+                sh 'docker rmi cleyfobre/demo2:$BUILD_NUMBER'
+                sh 'docker rmi cleyfobre/demo2:latest'
             }
         }
         stage('========== Work for test-web instance ==========') {
@@ -42,7 +57,5 @@ pipeline {
 
         }
     }
-    environment {
-        TARGET_HOST = "ubuntu@172.31.5.156"
-    }
+
 }
